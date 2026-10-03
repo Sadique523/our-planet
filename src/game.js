@@ -1652,7 +1652,9 @@ function stepWalker(dt){
   const sp=me.vel.length();
   if(sp>0.01){
     const vd=me.vel.clone().divideScalar(sp),dist=sp*dt,cand=offsetP(me.p,vd,dist),g1=groundH(cand);
-    const tooSteep=!me.air&&(g1-g0)/dist>1.15&&g1-g0>0.03;      // gentle hills yes, cliffs no
+    // gentle hills and kerbs yes, cliffs no: judge the slope over a stride, and always allow small steps up
+    const gA=groundH(offsetP(me.p,vd,0.6)),rise=gA-g0;
+    const tooSteep=!me.air&&rise>0.35&&rise/0.6>1.15&&g1>g0;
     const tooDeep=waterLevelAt(cand)-g1>1.0;                     // wade in up to the waist
     if(!tooSteep&&!tooDeep)me.p.copy(cand);else me.vel.multiplyScalar(0.2);
   }
@@ -1699,7 +1701,8 @@ function updateCamera(dt,snap){
       camera.position.copy(eye);camera.up.copy(me.p);
       camera.lookAt(eye.clone().addScaledVector(me.f,10*Math.cos(pitch)).addScaledVector(me.p,10*Math.sin(pitch)));
     }else{
-      if(!fpLook.drag&&me.speed>0.3)me.camF.lerp(me.f,1-Math.exp(-1.3*dt));
+      // follow behind only when walking straight ahead; strafing or backing up must not swing the camera (or you walk in circles)
+      if(!fpLook.drag&&me.speed>0.3&&keys.w&&!keys.a&&!keys.d&&!keys.s)me.camF.lerp(me.f,1-Math.exp(-1.3*dt));
       if(me.sit&&!fpLook.drag)me.camF.lerp(me.sit.front.clone().applyAxisAngle(me.p,Math.sin(performance.now()*0.00012)*0.35),1-Math.exp(-0.6*dt));
       me.camF.addScaledVector(me.p,-me.camF.dot(me.p)).normalize();
       const dist=6*clamp(state.zoom,0.45,2.2),head=me.p.clone().multiplyScalar(R+me.h+1.25);
