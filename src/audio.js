@@ -91,6 +91,15 @@ function chirp(t){   // a little songbird phrase
     o.connect(g).connect(S.sfxBus);o.start(s);o.stop(s+0.08);
   }
 }
+// soft footsteps: grass is a hush, road a tap, snow a crunch
+function step(surface){
+  const c=S.ctx;if(!c||!S.sfx||c.state!=='running')return;
+  const t=c.currentTime+0.01,src=c.createBufferSource(),f=c.createBiquadFilter(),g=c.createGain();
+  const cfg={grass:['lowpass',700,0.09,0.09],road:['bandpass',1500,0.07,0.06],snow:['bandpass',2600,0.08,0.14],water:['lowpass',500,0.12,0.22]}[surface]||['lowpass',800,0.08,0.08];
+  src.buffer=S.noise;f.type=cfg[0];f.frequency.value=cfg[1]*(0.9+Math.random()*0.2);f.Q.value=0.8;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(cfg[2],t+0.008);g.gain.exponentialRampToValueAtTime(0.0001,t+cfg[3]);
+  src.connect(f).connect(g).connect(S.sfxBus);src.start(t,Math.random()*1.5);src.stop(t+cfg[3]+0.05);
+}
 function cricket(t){
   const c=S.ctx;
   for(let i=0;i<3;i++){
@@ -143,11 +152,12 @@ function update(o,dt){
   const sp=Math.min(S.speed,18);
   S.eng1.frequency.setTargetAtTime(34+sp*2.6,t,0.1);S.eng2.frequency.setTargetAtTime(68+sp*5.2,t,0.1);
   S.engLP.frequency.setTargetAtTime(180+sp*22,t,0.1);
-  S.engGain.gain.setTargetAtTime(0.018+sp/18*0.05,t,0.15);
-  S.rush.fl.frequency.setTargetAtTime(350+sp*70,t,0.2);S.rush.g.gain.setTargetAtTime(sp/18*0.07,t,0.2);
+  const eng=o.engine===false?0:1;
+  S.engGain.gain.setTargetAtTime((0.018+sp/18*0.05)*eng,t,0.15);
+  S.rush.fl.frequency.setTargetAtTime(350+sp*70,t,0.2);S.rush.g.gain.setTargetAtTime(sp/18*0.07*eng,t,0.2);
   const windy=/Alps|Snowy|lake/i.test(S.zone)?0.09:0.025;
   S.wind.g.gain.setTargetAtTime(windy*(0.7+0.3*Math.sin(t*0.37)*Math.sin(t*0.11)),t,0.8);
   S.wind.fl.frequency.setTargetAtTime(380+120*Math.sin(t*0.23),t,0.8);
 }
-OP.audio={start,update,setMusic:v=>{S.music=v;},setSfx:v=>{S.sfx=v;},get started(){return!!S.ctx;},state:()=>S.ctx?S.ctx.state+' bar='+S.bar+' step='+S.step+' mood='+S.mood+' moving='+S.moving.toFixed(2):'not started'};
+OP.audio={start,update,step,setMusic:v=>{S.music=v;},setSfx:v=>{S.sfx=v;},get started(){return!!S.ctx;},state:()=>S.ctx?S.ctx.state+' bar='+S.bar+' step='+S.step+' mood='+S.mood+' moving='+S.moving.toFixed(2):'not started'};
 })();

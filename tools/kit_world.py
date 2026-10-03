@@ -617,3 +617,24 @@ def plane_prop():
     return P
 build('Plane', plane())
 build('Plane_Prop', plane_prop())
+
+
+# ---------------------------------------------------------------- traffic light
+# Origin at the pole base on the right-hand kerb; faces +Z toward oncoming drivers; the arm reaches over the road along -X.
+# The lit lamps themselves are drawn by the game (so they can change colour); the model has dark sockets at
+# (-2.05, 3.38 / 3.05 / 2.72, 0.2).
+M.update(signalbox=mat('SignalBox', 0x4A4858, 0.6), signalpole=mat('SignalPole', 0x9AA0B2, 0.5))
+def traffic_light():
+    P = [(xf(cyl(0.09, 0.11, 3.7, 12), (0, 1.85, 0)), M['signalpole']),
+         (xf(cyl(0.2, 0.24, 0.25, 14), (0, 0.12, 0)), M['signalpole']),
+         (xf(rbox(2.3, 0.12, 0.12, 0.04, 4), (-1.1, 3.62, 0)), M['signalpole']),
+         (xf(cyl(0.03, 0.03, 0.9, 6), (-0.45, 3.25, 0), (0, 0, -0.75)), M['signalpole']),
+         (xf(rbox(0.42, 1.12, 0.32, 0.08, 6), (-2.05, 3.05, 0)), M['signalbox']),
+         (xf(rbox(0.5, 1.2, 0.04, 0.04, 4), (-2.05, 3.05, -0.18)), M['band'])]
+    for y in (3.38, 3.05, 2.72):
+        P.append((xf(cyl(0.14, 0.14, 0.04, 16), (-2.05, y, 0.165), (math.pi / 2, 0, 0)), M['dark']))
+        P.append((xf(rbox(0.34, 0.035, 0.22, 0.015, 4), (-2.05, y + 0.16, 0.27), (0.3, 0, 0)), M['signalbox']))
+    P += [(xf(rbox(0.2, 0.3, 0.14, 0.05, 4), (0, 1.15, 0.13)), M['signalbox']),
+          (xf(cyl(0.04, 0.04, 0.03, 10), (0, 1.2, 0.21), (math.pi / 2, 0, 0)), M['lamp'])]
+    return P
+build('TrafficLight', traffic_light())

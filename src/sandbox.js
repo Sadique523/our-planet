@@ -70,6 +70,15 @@ const assemble={
     g.userData.anim=t=>{const a=t*0.15;w.rotation.z=a;cabs.forEach((c,k)=>{const b=a+k/10*Math.PI*2;c.position.set(Math.cos(b)*7.2,9.4+Math.sin(b)*7.2,0);});};
     g.userData.anim(0);return g;
   },
+  Explorer(){
+    const w=OP.makeWalker();w.userData.anim=t=>OP.animateWalker(w,t*7,1,t);return w;
+  },
+  TrafficLight(){
+    const o=clone('TrafficLight'),cols=[0xFF5B5B,0xFFC447,0x5FE39A],off=[0x4A2E36,0x4A4030,0x26403A],lamps=[];
+    [3.38,3.05,2.72].forEach((y,k)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(0.12,12,8),new THREE.MeshBasicMaterial({color:lin(off[k])}));m.scale.z=0.5;m.position.set(-2.05,y,0.2);o.add(m);lamps.push(m);});
+    o.userData.anim=t=>{const ph=t%8,st=ph<4?2:ph<5.5?1:0;lamps.forEach((m,k)=>m.material.color.copy(lin(k===st?cols[k]:off[k])));};
+    return o;
+  },
   Bird(){
     const b=extra.Bird.clone(true);b.traverse(m=>{if(m.isMesh){m.material=m.material.clone();m.castShadow=true;}});b.position.set(0,0,0);
     const wl=b.children[3],wr=b.children[4];
@@ -79,13 +88,13 @@ const assemble={
 const CATALOG=[
   ['Vehicles',[['Truck','The player truck, with steering and spinning wheels'],['Car_Pickup_Static','Parked pickup'],['Car_Bubble_Static','Bubble car'],
     ['Sailboat','Sails on Lake Lull'],['Rowboat','Moored at the piers and drifting on Maple Lake',1],['Plane','Propeller plane with a spinning prop'],['Balloon','Hot air balloon']]],
-  ['People and animals',[['Person','City walker, coloured per person'],['Duck','Mother duck (ducklings are this model at 55%)',1],['Bird','Flies in V formations']]],
+  ['People and animals',[['Explorer','You, on foot: arms and legs swing as you walk'],['Person','City walker, coloured per person'],['Duck','Mother duck (ducklings are this model at 55%)',1],['Bird','Flies in V formations']]],
   ['Homes and farm',[['House_Cottage','Suburb house'],['House_TwoStory','Suburb house'],['House_Bungalow','Suburb house with garage'],['Chalet','Swiss chalet in the Alps'],
     ['Barn'],['Silo'],['Windmill','Body plus turning blades']]],
   ['City',[['City_Tower'],['City_Office'],['City_Parisian'],['City_Apartment'],['City_Cafe'],['Shop'],['Market'],['Fountain'],['Ferris','Ferris wheel with swinging cabs']]],
   ['Water and landmarks',[['Lighthouse'],['Bridge','Stone arch bridge over Ribbon River'],['Pier','Wooden pier with lantern',1],['Reeds',null,1],['LilyPad',null,1],['LilyFlower',null,1]]],
   ['Nature',[['Tree_Round'],['Tree_Birch'],['Tree_Pine'],['Tree_PineTall'],['Tree_PineSnow'],['Tree_PineTallSnow'],['Bush'],['Hedge'],['Boulder'],['SnowMound'],['Flower'],['Snowman']]],
-  ['Street',[['Lamp'],['Bench'],['Mailbox'],['Hydrant'],['Planter']]],
+  ['Street',[['TrafficLight','Traffic light: green, amber, red'],['Lamp'],['Bench'],['Mailbox'],['Hydrant'],['Planter']]],
   ['Parts',[['Ferris_Base'],['Ferris_Wheel'],['Ferris_Cab'],['Windmill_Body'],['Windmill_Blades'],['Plane_Prop']]]
 ];
 const pretty=id=>({Car_Pickup_Static:'Parked pickup',Car_Bubble_Static:'Bubble car',Ferris:'Ferris wheel'}[id]||id.replace(/^(City|House|Tree)_/,'').replace(/_/g,' ').replace(/([a-z])([A-Z])/g,'$1 $2'));
@@ -100,7 +109,7 @@ function buildList(){
     for(const [id,desc,water] of items){
       const b=document.createElement('button');b.className='item';b.type='button';b.dataset.id=id;
       b.innerHTML='<span></span><small></small>';b.firstChild.textContent=pretty(id);
-      b.lastChild.textContent=assemble[id]&&id!=='Bird'?'moves':'';
+      b.lastChild.textContent=assemble[id]?'moves':'';
       b.addEventListener('click',()=>select(id));
       nav.appendChild(b);entries.push({id,desc,water,cat,b,h});
     }

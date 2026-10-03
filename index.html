@@ -1,12 +1,13 @@
 <meta charset="utf-8">
-<title>Soft Pickup Planet</title>
+<title>Our Planet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
 <style>
-/* Layout: full-screen chase view over a tiny planet; frosted settings card top-left, speedometer bottom-centre, touch pad on phones. Single pastel look by choice. */
+/* Layout: the game fills the screen. Bottom right: round buttons for view, get out/in and settings; settings opens as a card above them.
+   Speedometer bottom centre, short toasts top centre, touch pad on phones. Single pastel look by choice. */
 :root{
-  --sky:#CFE6F5; --panel:rgba(255,252,248,.9); --ink:#3A3550; --muted:#777190; --line:#E5DFEC;
-  --chip:#F2EDF6; --focus:#8FC7E8;
+  --sky:#CFE6F5; --panel:rgba(255,252,248,.92); --ink:#3A3550; --muted:#777190; --line:#E5DFEC;
+  --chip:#F2EDF6; --focus:#8FC7E8; --accent:#EE8E86;
   --display:"Fredoka","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
   --body:"Nunito","Segoe UI",system-ui,sans-serif;
   color-scheme:light;
@@ -14,16 +15,34 @@
 html,body{height:100%;overflow:hidden}
 body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none;outline:none}
+button:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 
-.panel{position:fixed;top:calc(14px + env(safe-area-inset-top,0px));left:14px;width:270px;max-width:calc(100% - 28px);
-  background:var(--panel);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-radius:20px;
-  box-shadow:0 14px 40px -20px rgba(58,53,80,.45)}
-.panel summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 16px}
-.panel summary::-webkit-details-marker{display:none}
-.panel summary h1{font-family:var(--display);font-weight:600;font-size:22px;line-height:1;margin:0}
-.panel summary span{font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
-.panel[open] summary span::after{content:" ▲"} .panel:not([open]) summary span::after{content:" ▼"}
-.pbody{padding:0 16px 16px;display:flex;flex-direction:column;gap:12px}
+/* round HUD buttons */
+.hud{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;align-items:flex-end;z-index:5}
+.rb{display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;padding:0;cursor:pointer;color:var(--ink);font:inherit}
+.rb .ic{width:58px;height:58px;border-radius:50%;background:var(--panel);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  display:grid;place-items:center;box-shadow:0 10px 26px -14px rgba(58,53,80,.55);transition:transform .15s ease,background .15s ease}
+.rb:hover .ic{transform:translateY(-2px)}
+.rb .ic svg{width:28px;height:28px;stroke:var(--ink);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.rb span{font-size:11px;font-weight:800;letter-spacing:.04em;background:var(--panel);padding:1px 8px;border-radius:999px;white-space:nowrap}
+.rb[aria-pressed="true"] .ic{background:var(--ink)}
+.rb[aria-pressed="true"] .ic svg{stroke:#FFFFFF}
+.rb.go .ic{background:var(--accent)}
+.rb.go .ic svg{stroke:#FFFFFF}
+.rb:disabled{cursor:default;opacity:.55}
+.rb:disabled:hover .ic{transform:none}
+
+/* settings card */
+.settings[hidden]{display:none!important}
+.settings{position:fixed;right:16px;bottom:calc(104px + env(safe-area-inset-bottom,0px));width:300px;max-width:calc(100% - 32px);max-height:calc(100% - 140px);overflow:auto;
+  background:var(--panel);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:22px;z-index:6;
+  box-shadow:0 18px 50px -20px rgba(58,53,80,.5);padding:16px 18px 18px;display:flex;flex-direction:column;gap:13px;
+  transform-origin:100% 100%;animation:pop .18s ease}
+@keyframes pop{from{opacity:0;transform:scale(.96) translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.settings{animation:none}}
+.shead{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.shead h1{font-family:var(--display);font-weight:600;font-size:22px;line-height:1;margin:0}
+.x{border:0;background:var(--chip);color:var(--ink);width:32px;height:32px;border-radius:50%;font:800 16px var(--body);cursor:pointer}
 .group{display:flex;flex-direction:column;gap:7px}
 .label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .seg{display:flex;flex-wrap:wrap;gap:6px}
@@ -32,47 +51,81 @@ body{background:var(--sky);color:var(--ink);font-family:var(--body);font-size:15
 .sw{display:flex;flex-wrap:wrap;gap:8px}
 .sw button{width:30px;height:30px;border-radius:50%;border:3px solid #FFFFFF;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
 .sw button[aria-pressed="true"]{box-shadow:0 0 0 2.5px var(--ink)}
-button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
-.hint{margin:0;font-size:13px;color:var(--muted)}
+.keys{margin:0;display:grid;grid-template-columns:auto 1fr;gap:5px 10px;font-size:13px;color:var(--muted);align-items:baseline}
+.keys dt{white-space:nowrap}
+.keys dd{margin:0}
+kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip);border-radius:6px;padding:1px 6px;color:var(--ink)}
 .sbx{font-weight:800;font-size:13px;color:var(--ink);text-decoration:none;background:var(--chip);padding:7px 12px;border-radius:999px;align-self:flex-start}
 .sbx:hover{background:var(--line)}
-.hint kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip);border-radius:6px;padding:1px 6px;color:var(--ink)}
 
-.speedo{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));
+.speedo{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));
   background:var(--panel);border-radius:999px;padding:6px 18px 6px 20px;display:flex;align-items:baseline;gap:6px;
-  box-shadow:0 10px 30px -18px rgba(58,53,80,.5);pointer-events:none}
+  box-shadow:0 10px 30px -18px rgba(58,53,80,.5);pointer-events:none;white-space:nowrap}
 .speedo b{font-family:var(--display);font-weight:600;font-size:26px;font-variant-numeric:tabular-nums;min-width:2.2ch;text-align:right}
 .speedo small{font-weight:800;font-size:12px;color:var(--muted)}
 .speedo i{font-style:normal;font-weight:800;font-size:12px;color:var(--muted);margin-left:10px;padding-left:10px;border-left:2px solid var(--line)}
+.toast{position:fixed;left:50%;top:calc(16px + env(safe-area-inset-top,0px));transform:translateX(-50%);background:var(--panel);
+  border-radius:999px;padding:8px 18px;font-weight:800;font-size:14px;box-shadow:0 10px 30px -18px rgba(58,53,80,.5);pointer-events:none;
+  transition:opacity .25s ease;white-space:nowrap}
+.toast kbd{margin:0 2px}
 
 .pad{position:fixed;inset:auto 0 calc(70px + env(safe-area-inset-bottom,0px)) 0;padding:0 16px;display:none;justify-content:space-between;pointer-events:none}
 .pad div{display:flex;gap:10px}
 .pad button{pointer-events:auto;width:64px;height:64px;border-radius:50%;border:0;background:var(--panel);color:var(--ink);font:800 22px var(--body);
   box-shadow:0 8px 20px -10px rgba(58,53,80,.5);touch-action:none;user-select:none;-webkit-user-select:none}
-@media (pointer:coarse){.pad{display:flex}}
+@media (pointer:coarse){
+  .pad{display:flex}
+  .hud{top:calc(16px + env(safe-area-inset-top,0px));bottom:auto;align-items:flex-start}
+  .settings{top:calc(104px + env(safe-area-inset-top,0px));bottom:auto;max-height:calc(100% - 260px)}
+}
+@media (max-width:560px){.speedo i:last-child{display:none}.rb .ic{width:52px;height:52px}}
 
-.clean .panel,.clean .speedo,.clean .pad{display:none!important}
+.clean .hud,.clean .settings,.clean .speedo,.clean .pad,.clean .toast{display:none!important}
 .msg{position:fixed;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-family:var(--display);font-size:20px;color:var(--ink)}
-@media (max-width:640px){.panel{width:auto;right:14px}}
 </style>
 
-<canvas id="c" tabindex="0" aria-label="A cute pickup truck driving around a tiny round planet"></canvas>
+<canvas id="c" tabindex="0" aria-label="A cute pickup truck on a tiny round planet"></canvas>
 <div class="msg" id="msg">Loading the planet…</div>
 
-<details class="panel" id="panel" open>
-  <summary><h1>Soft Pickup Planet</h1><span>Settings</span></summary>
-  <div class="pbody">
-    <div class="group"><span class="label">Camera</span><div class="seg" id="cam"></div></div>
-    <div class="group"><span class="label">Sound</span><div class="seg" id="sound"></div></div>
-    <div class="group"><span class="label">Time of day</span><div class="seg" id="time"></div></div>
-    <div class="group"><span class="label">Go to</span><div class="seg" id="go"></div></div>
-    <div class="group"><span class="label">Truck colour</span><div class="sw" id="color"></div></div>
-    <div class="group"><span class="label">Zoom</span><div class="seg" id="zoom"><button type="button" id="zoom-out" aria-label="Zoom out">−</button><button type="button" id="zoom-in" aria-label="Zoom in">+</button><button type="button" id="zoom-planet">Whole planet</button></div></div>
-    <p class="hint">Drive with <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrows. <kbd>Space</kbd> handbrake, <kbd>C</kbd> camera (chase, top, driver: drag to look around), scroll to zoom.</p>
-    <a class="sbx" href="sandbox.html">Open the model sandbox →</a>
-  </div>
-</details>
+<div class="hud">
+  <button class="rb" id="viewBtn" type="button" aria-label="Switch to first person view">
+    <span class="ic"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+    <span id="viewLabel">1st person</span>
+  </button>
+  <button class="rb go" id="exitBtn" type="button" aria-label="Get out of the truck">
+    <span class="ic"><svg viewBox="0 0 24 24" id="exitIcon"><circle cx="13" cy="4.5" r="2"/><path d="M10 21l2-6 3 3v3M9 11l3-3 3 3 2 1M12 8l-1.5 6"/></svg></span>
+    <span id="exitLabel">Get out</span>
+  </button>
+  <button class="rb" id="setBtn" type="button" aria-label="Open settings" aria-expanded="false" aria-controls="settings">
+    <span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg></span>
+    <span>Settings</span>
+  </button>
+</div>
 
+<section class="settings" id="settings" role="dialog" aria-label="Settings" hidden>
+  <div class="shead"><h1>Our Planet</h1><button class="x" id="closeSet" type="button" aria-label="Close settings">✕</button></div>
+  <div class="group"><span class="label">Camera</span><div class="seg" id="cam"></div></div>
+  <div class="group"><span class="label">Sound</span><div class="seg" id="sound"></div></div>
+  <div class="group"><span class="label">Time of day</span><div class="seg" id="time"></div></div>
+  <div class="group"><span class="label">Go to</span><div class="seg" id="go"></div></div>
+  <div class="group"><span class="label">Truck colour</span><div class="sw" id="color"></div></div>
+  <div class="group"><span class="label">Zoom</span><div class="seg" id="zoom"><button type="button" id="zoom-out" aria-label="Zoom out">−</button><button type="button" id="zoom-in" aria-label="Zoom in">+</button><button type="button" id="zoom-planet">Whole planet</button></div></div>
+  <div class="group"><span class="label">Keys</span>
+    <dl class="keys">
+      <dt><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></dt><dd>Drive or walk (arrows work too)</dd>
+      <dt><kbd>E</kbd></dt><dd>Get out of the truck or back in; sit on a bench</dd>
+      <dt><kbd>Space</kbd></dt><dd>Handbrake in the truck, jump on foot</dd>
+      <dt><kbd>Shift</kbd></dt><dd>Run</dd>
+      <dt><kbd>V</kbd></dt><dd>First / third person</dd>
+      <dt><kbd>C</kbd></dt><dd>Cycle cameras, including top-down</dd>
+      <dt>Drag</dt><dd>Look around</dd>
+      <dt>Scroll</dt><dd>Zoom</dd>
+    </dl>
+  </div>
+  <a class="sbx" href="sandbox.html">Open the model sandbox →</a>
+</section>
+
+<div class="toast" id="toast" style="opacity:0" aria-live="polite"></div>
 <div class="speedo" aria-live="off"><b id="kmh">0</b><small>km/h</small><i id="place">Town</i><i id="clock">15:00</i></div>
 <div class="pad" aria-hidden="true">
   <div><button data-k="a">◀</button><button data-k="d">▶</button></div>

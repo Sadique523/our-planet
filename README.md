@@ -55,14 +55,26 @@ Overhead, **hot air balloons** drift, **little planes** circle the globe (one to
 
 <img src="docs/images/snowy-north.png" alt="A road through a forest of snow-laden pine trees in soft polar twilight" width="100%">
 
+## On foot
+
+Stop the truck and press **E** to hop out as a little explorer with a backpack. Walk, run and jump in **third or first person**: up gentle hills (not cliffs), into lakes up to your waist. City folk stop and turn to say hello, and traffic waits for you.
+
+Benches sit only at chosen **viewpoints**: across Lake Lull and Maple Lake toward their islands, at the alpine lake below the Sugarhorn, on the river bank by the stone bridge, at the edge of Petal Meadow, on a hill above the city skyline, in the Snowy North facing the Alps, and by the windmills. Walk up to one and press **E** to sit and simply watch the world go by.
+
+<img src="docs/images/bench-sunset.png" alt="The explorer sitting on a lakeside bench at sunset, watching sailboats on Lake Lull" width="100%">
+
+## Traffic
+
+Traffic lights stand at every crossing of the main roads, with painted stop lines and zebra crossings. Cars ease to a stop on red, queue, and pull away on green, and they go through on amber only when they're too close to stop. When traffic on a road has red, pedestrians cross over the zebra. Cars wait for anyone still crossing, for you on foot, and they pull around a truck you've parked in the lane.
+
 ## Day and night
 
-The sun really circles the planet, so the time of day depends on where you are. Drive west and you can chase the sunset.
+Time flows forward everywhere on the planet, and the sun moves across your own sky: it rises in the east, rides high in the south at noon and sets in the west.
 
 - 🌅 Golden hour with a warm glow on the horizon and long shadows
 - 🌙 Night with stars, a moon, glowing windows, street lamps and truck headlights
 - ⏱️ A full day lasts about ten minutes and lingers around sunrise and sunset
-- Pick **Auto**, **Day**, **Sunset** or **Night** in the panel; the clock sits next to the speedometer
+- Pick **Auto**, **Day**, **Sunset** or **Night** in Settings; the clock sits next to the speedometer
 
 ## Music and sound
 
@@ -72,14 +84,17 @@ Soft, soothing music is generated live in the browser: pad chords, music-box not
 
 | Key | Action |
 |---|---|
-| <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or arrows | Drive |
-| <kbd>Space</kbd> | Handbrake (drift and leave skid marks) |
+| <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or arrows | Drive or walk |
+| <kbd>E</kbd> | Get out of the truck, get back in, sit on a bench |
+| <kbd>Space</kbd> | Handbrake in the truck (drift and leave skid marks), jump on foot |
+| <kbd>Shift</kbd> | Run |
+| <kbd>V</kbd> | First / third person |
 | <kbd>C</kbd> | Cycle cameras: chase, top-down, driver seat |
-| Drag (driver view) | Look around from the driver seat |
+| Drag | Look around (driver seat, first person) or orbit the camera on foot |
 | Mouse wheel | Zoom (all the way out to see the whole planet) |
 | Touch buttons | Drive on phones and tablets |
 
-The **Go to** buttons jump straight to the Alps, the lakes, the farm, the meadow or the poles. The truck follows the terrain: it tilts on slopes, slows uphill, rolls back on steep mountainsides and gets bogged down in water.
+The round buttons in the bottom-right corner switch between first and third person, get you in or out of the truck (or onto a bench), and open **Settings**. Inside Settings, the **Go to** buttons jump straight to the Alps, the lakes, the farm, the meadow or the poles. The truck follows the terrain: it tilts on slopes, slows uphill, rolls back on steep mountainsides and gets bogged down in water.
 
 ## Run it locally
 
