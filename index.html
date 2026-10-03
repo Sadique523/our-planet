@@ -63,11 +63,12 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
   <summary><h1>Soft Pickup Planet</h1><span>Settings</span></summary>
   <div class="pbody">
     <div class="group"><span class="label">Camera</span><div class="seg" id="cam"></div></div>
+    <div class="group"><span class="label">Sound</span><div class="seg" id="sound"></div></div>
     <div class="group"><span class="label">Time of day</span><div class="seg" id="time"></div></div>
     <div class="group"><span class="label">Go to</span><div class="seg" id="go"></div></div>
     <div class="group"><span class="label">Truck colour</span><div class="sw" id="color"></div></div>
     <div class="group"><span class="label">Zoom</span><div class="seg" id="zoom"><button type="button" id="zoom-out" aria-label="Zoom out">−</button><button type="button" id="zoom-in" aria-label="Zoom in">+</button><button type="button" id="zoom-planet">Whole planet</button></div></div>
-    <p class="hint">Drive with <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrows. <kbd>Space</kbd> handbrake, <kbd>C</kbd> camera, scroll to zoom.</p>
+    <p class="hint">Drive with <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or arrows. <kbd>Space</kbd> handbrake, <kbd>C</kbd> camera (chase, top, driver: drag to look around), scroll to zoom.</p>
     <a class="sbx" href="sandbox.html">Open the model sandbox →</a>
   </div>
 </details>
@@ -81,4 +82,5 @@ button:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="src/shared.js"></script>
+<script src="src/audio.js"></script>
 <script src="src/game.js"></script>

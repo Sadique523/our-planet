@@ -64,13 +64,18 @@ The sun really circles the planet, so the time of day depends on where you are. 
 - ⏱️ A full day lasts about ten minutes and lingers around sunrise and sunset
 - Pick **Auto**, **Day**, **Sunset** or **Night** in the panel; the clock sits next to the speedometer
 
+## Music and sound
+
+Soft, soothing music is generated live in the browser: pad chords, music-box notes on a pentatonic scale, a gentle bass line, warm reverb and echo. It swells as you drive and fades to a whisper when you stop. At night it slows down and turns softer and dreamier, and a faint shaker joins when you pick up speed. Underneath sit quiet ambient sounds: a gentle engine purr, wind in the mountains and the snow, birdsong by day and crickets at night. Toggle **Music** and **Sounds** in the panel; audio starts on your first click or key press, as browsers require.
+
 ## Controls
 
 | Key | Action |
 |---|---|
 | <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> or arrows | Drive |
 | <kbd>Space</kbd> | Handbrake (drift and leave skid marks) |
-| <kbd>C</kbd> | Switch between chase and top-down camera |
+| <kbd>C</kbd> | Cycle cameras: chase, top-down, driver seat |
+| Drag (driver view) | Look around from the driver seat |
 | Mouse wheel | Zoom (all the way out to see the whole planet) |
 | Touch buttons | Drive on phones and tablets |
 
@@ -132,6 +137,7 @@ index.html            the game page
 sandbox.html          the model sandbox
 src/game.js           planet, terrain, roads, life, day/night, driving, camera
 src/sandbox.js        sandbox viewer
+src/audio.js          generative music and ambient sound (Web Audio)
 src/shared.js         small models built in code and shared settings
 assets/kit.glb        every Blender model (kit.json is the same data as JSON)
 assets/kit.blend      the Blender file
