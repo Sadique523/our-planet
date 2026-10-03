@@ -1080,20 +1080,26 @@ function updateLife(dt,time){
     if(w.kind===0){
       w.t+=w.dir*w.v*dt/R*(w.jump>0?0:1);
       if(w.t>w.tMax){w.t=w.tMax;w.dir=-1;}if(w.t<w.tMin){w.t=w.tMin;w.dir=1;}
-      const p0=pointOn(w.r,w.t);p=offsetP(p0,w.r.n,w.side);front=tangentOn(w.r,w.t).multiplyScalar(w.dir);
+      const p0=pointOn(w.r,w.t);p=offsetP(p0,w.r.n,w.side+(w.dodge||0));front=tangentOn(w.r,w.t).multiplyScalar(w.dir);
     }else{
       if(!w.c)return;
       w.a+=w.v*dt/w.rad*(w.jump>0?0:1);
       const t1=randomTangentFixed(w.c),t2=V(0,0,0).crossVectors(w.c,t1);
       const dir=t1.clone().multiplyScalar(Math.cos(w.a)).addScaledVector(t2,Math.sin(w.a));
-      p=offsetP(w.c,dir,w.rad);front=t2.clone().multiplyScalar(Math.cos(w.a)).addScaledVector(t1,-Math.sin(w.a)).multiplyScalar(Math.sign(w.v));
+      p=offsetP(w.c,dir,w.rad+(w.dodge||0));front=t2.clone().multiplyScalar(Math.cos(w.a)).addScaledVector(t1,-Math.sin(w.a)).multiplyScalar(Math.sign(w.v));
     }
     const pw=p.clone().multiplyScalar(R);
-    const near=me.on&&pw.distanceTo(mePos)<3.4;
-    if(near){   // stop and turn to look at the explorer
-      if(w.kind===0)w.t-=w.dir*w.v*dt/R;else w.a-=w.v*dt/w.rad;
-      front=tangentToward(p,me.p.clone().sub(p));
-    }else w.ph+=dt*w.v*6;
+    // step aside to pass the explorer, then drift back to their usual line
+    const dMe=me.on?pw.distanceTo(mePos):1e9;
+    let want=0;
+    if(dMe<3.2){
+      const lat=w.kind===0?w.r.n:tangentToward(p,p.clone().sub(w.c));
+      const side=me.p.clone().sub(p).dot(lat)>0?-1:1;
+      want=side*(1.25-Math.min(1,dMe/3.2)*0.5);
+      if(dMe<2.4&&!w.greeted&&w.jump<=0){w.greeted=true;w.jump=0.01;w.jv=2.6;}   // a little hop to say hi
+    }else if(dMe>6)w.greeted=false;
+    w.dodge=(w.dodge||0)+(want-(w.dodge||0))*Math.min(1,dt*3);
+    w.ph+=dt*w.v*6;
     if(w.jump<=0&&pw.distanceTo(carPos)<2.8&&Math.abs(car.vf)>1.5){w.jump=0.01;w.jv=4.2;}
     if(w.jump>0){w.jv-=14*dt;w.jump+=w.jv*dt;if(w.jump<=0){w.jump=0;}}
     const base=w.kind===0?Y_WALK:Math.max(hAtCached(w,p),0);
@@ -1116,9 +1122,10 @@ function updateLife(dt,time){
     const off=c.walking?lerp(c.from,-c.from,c.u):c.from,p=offsetP(pointOn(c.road,c.tz),c.road.n,off);
     const along=tangentOn(c.road,c.tz).multiplyScalar(c.off);
     const pp=offsetP(p,along.lengthSq()>0?along.clone().normalize():c.road.n,Math.abs(c.off));
-    const front=c.walking?c.road.n.clone().multiplyScalar(-Math.sign(c.from)):tangentToward(pp,c.road.n.clone().multiplyScalar(-Math.sign(c.from)));
-    const onRoad=Math.abs(off)<c.road.rh,bob=c.walking?Math.abs(Math.sin(c.ph))*0.06:0;
-    const q=quatUpFront(pp,front);if(c.walking){_q.setFromAxisAngle(V(0,0,1),Math.sin(c.ph)*0.06);q.multiply(_q);}
+    let front=c.walking?c.road.n.clone().multiplyScalar(-Math.sign(c.from)):tangentToward(pp,c.road.n.clone().multiplyScalar(-Math.sign(c.from)));
+    if(!c.walking)front.applyAxisAngle(pp,Math.sin(time*0.45+c.ph)*0.55);
+    const onRoad=Math.abs(off)<c.road.rh,bob=c.walking?Math.abs(Math.sin(c.ph))*0.06:Math.sin(time*1.6+c.ph)*0.012+0.012;
+    const q=quatUpFront(pp,front);_q.setFromAxisAngle(V(0,0,1),c.walking?Math.sin(c.ph)*0.06:Math.sin(time*0.9+c.ph)*0.025);q.multiply(_q);
     if(c.walking&&onRoad)crossPos.push(pp.clone().multiplyScalar(R));
     anim.crossers.inst.set(i,pp.multiplyScalar(R+(onRoad?Y_ROAD:Y_WALK)+bob),q);
   });anim.crossers.inst.commit();}
