@@ -1,0 +1,10 @@
+# Blender autosaves and build logs
+*.blend1
+tools/kit_log.txt
+__pycache__/
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+node_modules/

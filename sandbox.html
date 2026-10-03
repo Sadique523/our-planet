@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Our Planet Model Sandbox</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600&family=Nunito:wght@600;700;800&display=swap">
+<style>
+/* Layout: model list on the left, turntable stage in the middle, inspector on the right (stacks on phones). Single pastel look. */
+:root{
+  --bg:#EEF3F7; --panel:#FFFCF8; --ink:#3A3550; --muted:#777190; --line:#E5DFEC; --chip:#F2EDF6; --sel:#3A3550; --focus:#8FC7E8;
+  --display:"Fredoka","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.45;overflow:hidden}
+.app{display:grid;grid-template-columns:250px minmax(0,1fr) 290px;height:100%}
+aside{background:var(--panel);display:flex;flex-direction:column;min-height:0}
+.list{border-right:1px solid var(--line)}
+.insp{border-left:1px solid var(--line);overflow:auto;padding:16px;gap:16px}
+header{padding:16px 16px 10px;display:flex;flex-direction:column;gap:8px}
+h1{font-family:var(--display);font-weight:600;font-size:22px;line-height:1.05;margin:0}
+header a{color:var(--muted);font-weight:700;font-size:13px;text-decoration:none}
+header a:hover{color:var(--ink)}
+#search{font:inherit;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#FFFFFF;color:var(--ink);width:100%}
+#models{overflow:auto;padding:0 8px 16px;flex:1;min-height:0}
+.cat{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 8px 4px}
+.item{display:flex;justify-content:space-between;align-items:center;width:100%;text-align:left;font:inherit;font-weight:700;border:0;background:none;color:var(--ink);padding:6px 8px;border-radius:8px;cursor:pointer}
+.item small{font-weight:700;color:var(--muted);font-size:11px}
+.item:hover{background:var(--chip)}
+.item[aria-current="true"]{background:var(--sel);color:#FFFFFF}
+.item[aria-current="true"] small{color:#D9D3E8}
+.stage{position:relative;min-width:0}
+#c{position:absolute;inset:0;width:100%;height:100%;display:block;outline:none}
+.toolbar{position:absolute;left:12px;right:12px;top:12px;display:flex;flex-wrap:wrap;gap:6px;pointer-events:none}
+.toolbar>*{pointer-events:auto}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.btn{font:inherit;font-weight:700;font-size:13px;border:0;background:rgba(255,252,248,.92);color:var(--ink);padding:6px 12px;border-radius:999px;cursor:pointer;box-shadow:0 4px 14px -8px rgba(58,53,80,.4)}
+.btn[aria-pressed="true"]{background:var(--sel);color:#FFFFFF}
+button:focus-visible,input:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.title{position:absolute;left:16px;bottom:14px;font-family:var(--display);font-weight:600;font-size:28px;pointer-events:none;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.insp h2{font-family:var(--display);font-weight:600;font-size:18px;margin:0}
+.sec{display:flex;flex-direction:column;gap:8px}
+.label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px}
+dt{color:var(--muted);font-weight:700}
+dd{margin:0;font-variant-numeric:tabular-nums;font-weight:700}
+.tint{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px 10px}
+.tint span{font-weight:700;overflow:hidden;text-overflow:ellipsis}
+.tint input[type=color]{width:38px;height:28px;border:1px solid var(--line);border-radius:8px;padding:0;background:none;cursor:pointer}
+.chips{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:5px}
+.chips button{width:20px;height:20px;border-radius:50%;border:2px solid #FFFFFF;box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+.mats{display:flex;flex-direction:column;gap:4px}
+.mat{display:flex;align-items:center;gap:8px}
+.mat i{width:14px;height:14px;border-radius:4px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);flex:none}
+.note{color:var(--muted);font-size:13px;margin:0}
+code{font-size:12px;background:var(--chip);padding:1px 5px;border-radius:5px}
+@media (max-width:900px){
+  body{overflow:auto}
+  .app{grid-template-columns:1fr;grid-template-rows:auto 60vh auto;height:auto}
+  .list{border-right:0;border-bottom:1px solid var(--line);max-height:38vh}
+  .insp{border-left:0;border-top:1px solid var(--line)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="list">
+    <header>
+      <h1>Model Sandbox</h1>
+      <a href="index.html">← Back to the planet</a>
+      <input id="search" type="search" placeholder="Search models" aria-label="Search models">
+    </header>
+    <nav id="models" aria-label="Models"></nav>
+  </aside>
+  <main class="stage">
+    <canvas id="c" tabindex="0" aria-label="3D view of the selected model"></canvas>
+    <div class="toolbar">
+      <div class="seg" id="light"></div>
+      <div class="seg">
+        <button class="btn" id="spin" aria-pressed="true">Turntable</button>
+        <button class="btn" id="scale" aria-pressed="false">Scale guide</button>
+        <button class="btn" id="wire" aria-pressed="false">Wireframe</button>
+        <button class="btn" id="anim" aria-pressed="true">Animate</button>
+      </div>
+    </div>
+    <div class="title" id="title"></div>
+  </main>
+  <aside class="insp">
+    <div class="sec"><span class="label">Model</span><h2 id="name">…</h2><p class="note" id="desc"></p></div>
+    <div class="sec"><span class="label">Size</span><dl id="stats"></dl></div>
+    <div class="sec" id="tintSec"><span class="label">Colours</span><div class="tint" id="tints"></div></div>
+    <div class="sec"><span class="label">Materials</span><div class="mats" id="mats"></div></div>
+    <div class="sec"><span class="label">Refining a model</span>
+      <p class="note">Blender models live in <code>tools/make_kit.py</code> and <code>tools/kit_world.py</code>. Edit a function, rebuild the kit, and this page shows the change on reload.</p></div>
+  </aside>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<script src="src/shared.js"></script>
+<script src="src/sandbox.js"></script>
+</body>
+</html>

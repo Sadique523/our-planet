@@ -1,0 +1,307 @@
+<title>Tiny Wheels Moodboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@400;600;800&display=swap">
+<style>
+/* Layout: playful header, then a 3/2/1-column grid of concept postcards (scene + notes), then a "pick next" strip */
+:root{
+  --bg:#EEF5F2; --paper:#FFFFFF; --ink:#2A2540; --muted:#5E5873; --line:#D6E2DD;
+  --accent:#FF6B5B; --chip:#F4EFFF;
+  --display:"Lilita One","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Nunito","Segoe UI",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#1B1A26; --paper:#262434; --ink:#F3F0FF; --muted:#B6B0CC; --line:#38354A;
+  --accent:#FF8A7D; --chip:#332F47; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1B1A26; --paper:#262434; --ink:#F3F0FF; --muted:#B6B0CC; --line:#38354A;
+  --accent:#FF8A7D; --chip:#332F47; color-scheme:dark}
+
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:40px 64px}
+header{display:flex;flex-direction:column;gap:10px;max-width:66ch}
+.eyebrow{font-weight:800;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(40px,7vw,68px);line-height:1;margin:0;text-wrap:balance}
+header p{margin:0;color:var(--muted);font-size:18px}
+
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:36px}
+@media (max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+
+.card{background:var(--paper);border-radius:22px;overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 2px 0 var(--line),0 12px 30px -18px rgba(40,30,80,.35)}
+.scene{display:block;width:100%;height:auto;aspect-ratio:400/250;max-width:100%}
+.body{padding:18px 20px 22px;display:flex;flex-direction:column;gap:12px;flex:1}
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+h2{font-family:var(--display);font-weight:400;font-size:28px;line-height:1.05;margin:0}
+.tag{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.pitch{margin:0;font-weight:600}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:15px}
+dt{font-weight:800;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+dd{margin:0;min-width:0}
+.swatches{display:flex;gap:6px;margin-top:auto;padding-top:6px}
+.swatches span{width:28px;height:28px;border-radius:50%;box-shadow:inset 0 0 0 2px rgba(0,0,0,.08)}
+
+.car{transform-box:fill-box;transform-origin:50% 100%;animation:bob 1.6s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0) scale(1,1)}50%{transform:translateY(-3px) scale(1.02,.98)}}
+@media (prefers-reduced-motion:reduce){.car{animation:none}}
+
+.next{margin-top:56px;display:flex;flex-direction:column;gap:18px}
+.next h3{font-family:var(--display);font-weight:400;font-size:32px;margin:0}
+.picks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+@media (max-width:800px){.picks{grid-template-columns:1fr}}
+.pick{border:2px dashed var(--line);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.pick b{font-family:var(--display);font-weight:400;font-size:20px}
+.pick ul{margin:0;padding-left:18px;color:var(--muted)}
+.pick li strong{color:var(--ink)}
+</style>
+
+<div class="wrap">
+  <header>
+    <span class="eyebrow">Car game · six directions</span>
+    <h1>Tiny Wheels</h1>
+    <p>Six starting points for a small, cute, cartoon car game. Each one pairs a car personality with a world and a core thing to do. Pick one, or mix pieces from several.</p>
+  </header>
+
+  <section class="grid">
+
+    <!-- 1 Toybox Town -->
+    <article class="card">
+      <svg class="scene" viewBox="0 0 400 250" role="img" aria-label="A wooden wind-up toy car on a bedroom rug next to alphabet blocks">
+        <rect width="400" height="250" fill="#F6E3C4"/>
+        <g stroke="#EBD1A8" stroke-width="2"><line x1="0" y1="45" x2="400" y2="45"/><line x1="0" y1="95" x2="400" y2="95"/><line x1="0" y1="145" x2="400" y2="145"/><line x1="130" y1="0" x2="130" y2="45"/><line x1="290" y1="45" x2="290" y2="95"/></g>
+        <ellipse cx="200" cy="205" rx="200" ry="50" fill="#9BD3C9"/>
+        <ellipse cx="200" cy="205" rx="165" ry="36" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="7 9"/>
+        <rect x="30" y="62" width="62" height="62" rx="7" fill="#F2A65A"/><text x="61" y="108" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="38" fill="#FFFFFF">A</text>
+        <rect x="38" y="2" width="62" height="62" rx="7" fill="#7DB7E8"/><text x="69" y="48" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="38" fill="#FFFFFF">B</text>
+        <rect x="310" y="70" width="58" height="58" rx="7" fill="#E86A6A"/><text x="339" y="113" text-anchor="middle" font-family="Lilita One, sans-serif" font-size="36" fill="#FFFFFF">C</text>
+        <polygon points="306,72 339,34 372,72" fill="#FFD166"/>
+        <rect x="248" y="104" width="54" height="10" rx="5" fill="#FFD166" transform="rotate(-12 275 109)"/>
+        <polygon points="300,96 314,100 302,108" fill="#2A2540" transform="rotate(-12 275 109)"/>
+        <ellipse cx="205" cy="200" rx="70" ry="9" fill="#000000" opacity=".12"/>
+        <g class="car">
+          <path d="M178 152 Q182 118 208 118 L226 118 Q248 118 252 152 Z" fill="#E2523F"/>
+          <path d="M188 150 Q191 127 208 127 L225 127 Q241 127 243 150 Z" fill="#CDEBF5"/>
+          <rect x="146" y="148" width="120" height="38" rx="14" fill="#E2523F"/>
+          <rect x="146" y="160" width="120" height="6" fill="#C2402F"/>
+          <circle cx="210" cy="140" r="5" fill="#2A2540"/><circle cx="228" cy="140" r="5" fill="#2A2540"/>
+          <circle cx="212" cy="138" r="1.6" fill="#FFFFFF"/><circle cx="230" cy="138" r="1.6" fill="#FFFFFF"/>
+          <ellipse cx="252" cy="174" rx="7" ry="4" fill="#FF9C8F"/>
+          <rect x="266" y="160" width="10" height="6" fill="#B07A4F"/><circle cx="282" cy="156" r="7" fill="#D9A066"/><circle cx="282" cy="171" r="7" fill="#D9A066"/>
+          <circle cx="174" cy="188" r="17" fill="#8A5A3B"/><circle cx="174" cy="188" r="6" fill="#D9A066"/>
+          <circle cx="238" cy="188" r="17" fill="#8A5A3B"/><circle cx="238" cy="188" r="6" fill="#D9A066"/>
+        </g>
+      </svg>
+      <div class="body">
+        <div class="top"><h2>Toybox Town</h2><span class="tag">Cozy · Errands</span></div>
+        <p class="pitch">A wind-up wooden car living on a kid's bedroom floor.</p>
+        <dl>
+          <dt>Car</dt><dd>Chunky painted wood, peg wheels, a turning key on the back that winds down as you drive.</dd>
+          <dt>World</dt><dd>Block towers, rug roads, a pencil bridge, a cereal-box tunnel under the bed.</dd>
+          <dt>Play</dt><dd>Run little deliveries between toys before your spring runs out. Wind up again at key stations.</dd>
+        </dl>
+        <div class="swatches" aria-label="Palette"><span style="background:#E2523F"></span><span style="background:#F2A65A"></span><span style="background:#7DB7E8"></span><span style="background:#9BD3C9"></span><span style="background:#F6E3C4"></span></div>
+      </div>
+    </article>
+
+    <!-- 2 Jelly Drift -->
+    <article class="card">
+      <svg class="scene" viewBox="0 0 400 250" role="img" aria-label="A squishy green gummy car drifting through candy hills with lollipop trees">
+        <defs><linearGradient id="g2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFC6DD"/><stop offset="1" stop-color="#FFE9D6"/></linearGradient></defs>
+        <rect width="400" height="250" fill="url(#g2)"/>
+        <circle cx="70" cy="45" r="22" fill="#FFF3B0"/>
+        <path d="M0 160 Q80 105 170 150 T400 135 V250 H0Z" fill="#C9B6F2"/>
+        <path d="M0 192 Q120 150 230 186 T400 178 V250 H0Z" fill="#A8E6CF"/>
+        <line x1="62" y1="168" x2="62" y2="120" stroke="#FFFFFF" stroke-width="5"/><circle cx="62" cy="108" r="20" fill="#FF7FA8"/>
+        <path d="M62 108 m-11 0 a11 11 0 1 1 11 11 a7 7 0 1 1 -7 -7" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+        <line x1="335" y1="160" x2="335" y2="112" stroke="#FFFFFF" stroke-width="5"/><circle cx="335" cy="98" r="22" fill="#7FC8FF"/>
+        <path d="M335 98 m-12 0 a12 12 0 1 1 12 12 a7 7 0 1 1 -7 -7" stroke="#FFFFFF" stroke-width="3" fill="none"/>
+        <path d="M0 226 Q200 196 400 226 V250 H0Z" fill="#FFF1F6"/>
+        <g stroke-width="4" stroke-linecap="round"><line x1="40" y1="236" x2="48" y2="232" stroke="#FF7FA8"/><line x1="90" y1="242" x2="96" y2="236" stroke="#7FC8FF"/><line x1="320" y1="238" x2="328" y2="240" stroke="#FFD166"/><line x1="360" y1="232" x2="364" y2="240" stroke="#A8E6CF"/><line x1="300" y1="244" x2="306" y2="238" stroke="#C9B6F2"/></g>
+        <g stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".8"><line x1="92" y1="170" x2="125" y2="170"/><line x1="80" y1="186" x2="122" y2="186"/><line x1="100" y1="202" x2="128" y2="202"/></g>
+        <ellipse cx="210" cy="222" rx="72" ry="8" fill="#000000" opacity=".1"/>
+        <g class="car">
+          <path d="M138 210 Q130 160 186 152 Q212 124 248 138 Q284 150 282 210 Z" fill="#6BD67A" opacity=".92"/>
+          <path d="M156 182 Q160 164 182 160" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" fill="none" opacity=".7"/>
+          <ellipse cx="240" cy="162" rx="24" ry="15" fill="#E8FFF0" opacity=".9"/>
+          <circle cx="232" cy="163" r="4.5" fill="#2A2540"/><circle cx="248" cy="163" r="4.5" fill="#2A2540"/>
+          <path d="M236 172 Q240 176 244 172" stroke="#2A2540" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="262" cy="190" rx="8" ry="4" fill="#FF9CB8" opacity=".8"/>
+          <circle cx="166" cy="212" r="15" fill="#FF5C8A"/><circle cx="166" cy="212" r="5" fill="#FFFFFF"/>
+          <circle cx="256" cy="212" r="15" fill="#FF5C8A"/><circle cx="256" cy="212" r="5" fill="#FFFFFF"/>
+        </g>
+      </svg>
+      <div class="body">
+        <div class="top"><h2>Jelly Drift</h2><span class="tag">Bouncy · Racing</span></div>
+        <p class="pitch">A gummy car that squashes, stretches and wobbles through candy land.</p>
+        <dl>
+          <dt>Car</dt><dd>Translucent jelly body that jiggles on landings and stretches into long drifts.</dd>
+          <dt>World</dt><dd>Lollipop trees, frosting roads, marshmallow bumpers, chocolate river jumps.</dd>
+          <dt>Play</dt><dd>Short drift races. Chain drifts to grow bigger and bouncier, crash to shrink back.</dd>
+        </dl>
+        <div class="swatches" aria-label="Palette"><span style="background:#6BD67A"></span><span style="background:#FF5C8A"></span><span style="background:#C9B6F2"></span><span style="background:#7FC8FF"></span><span style="background:#FFC6DD"></span></div>
+      </div>
+    </article>
+
+    <!-- 3 Pocket Island -->
+    <article class="card">
+      <svg class="scene" viewBox="0 0 400 250" role="img" aria-label="A tiny yellow bubble car driving a loop road around a small tropical island">
+        <rect width="400" height="250" fill="#7FD4F0"/>
+        <g stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" opacity=".6"><path d="M20 30 q10 -8 20 0 q10 8 20 0"/><path d="M330 220 q10 -8 20 0 q10 8 20 0"/><path d="M340 30 q10 -8 20 0"/><path d="M30 225 q10 -8 20 0"/></g>
+        <ellipse cx="200" cy="140" rx="168" ry="78" fill="#F7DFA0"/>
+        <ellipse cx="200" cy="132" rx="142" ry="62" fill="#8BD47A"/>
+        <ellipse cx="200" cy="132" rx="104" ry="42" fill="none" stroke="#F2E8D0" stroke-width="16"/>
+        <ellipse cx="200" cy="132" rx="104" ry="42" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-dasharray="6 8"/>
+        <rect x="180" y="104" width="40" height="28" rx="3" fill="#FFF6E5"/><polygon points="174,106 200,84 226,106" fill="#E86A6A"/><rect x="194" y="116" width="12" height="16" fill="#B07A4F"/>
+        <path d="M76 120 Q72 95 82 72" stroke="#A06B3F" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <g fill="#3FAE5A"><ellipse cx="70" cy="70" rx="18" ry="7" transform="rotate(-25 70 70)"/><ellipse cx="96" cy="70" rx="18" ry="7" transform="rotate(25 96 70)"/><ellipse cx="82" cy="62" rx="7" ry="16"/></g>
+        <path d="M320 118 Q324 96 316 78" stroke="#A06B3F" stroke-width="6" fill="none" stroke-linecap="round"/>
+        <g fill="#3FAE5A"><ellipse cx="304" cy="76" rx="18" ry="7" transform="rotate(-25 304 76)"/><ellipse cx="330" cy="76" rx="18" ry="7" transform="rotate(25 330 76)"/><ellipse cx="316" cy="68" rx="7" ry="16"/></g>
+        <circle cx="128" cy="104" r="6" fill="#FF8A3D"/><circle cx="274" cy="100" r="6" fill="#FF8A3D"/><circle cx="262" cy="150" r="6" fill="#FF5C8A"/>
+        <ellipse cx="200" cy="186" rx="34" ry="6" fill="#000000" opacity=".15"/>
+        <g class="car">
+          <ellipse cx="200" cy="168" rx="32" ry="20" fill="#FFCF3D"/>
+          <path d="M180 162 Q184 140 202 140 Q220 140 222 162 Z" fill="#CDEBF5"/>
+          <circle cx="196" cy="155" r="3.8" fill="#2A2540"/><circle cx="209" cy="155" r="3.8" fill="#2A2540"/>
+          <path d="M199 162 Q202.5 165 206 162" stroke="#2A2540" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="178" cy="168" r="3" fill="#FFFFFF"/><circle cx="222" cy="168" r="3" fill="#FFFFFF"/>
+          <circle cx="182" cy="185" r="8" fill="#2A2540"/><circle cx="218" cy="185" r="8" fill="#2A2540"/>
+        </g>
+      </svg>
+      <div class="body">
+        <div class="top"><h2>Pocket Island</h2><span class="tag">Chill · Explore</span></div>
+        <p class="pitch">A round bubble car on one tiny island you slowly fill with life.</p>
+        <dl>
+          <dt>Car</dt><dd>Egg-shaped two-seater with a glass dome. Unlock roof racks, a trailer, beach tires.</dd>
+          <dt>World</dt><dd>One small loop island with a hut, palms and fruit. New bits appear as you play.</dd>
+          <dt>Play</dt><dd>Collect fruit and shells, trade with island critters, unlock bridges to new islets.</dd>
+        </dl>
+        <div class="swatches" aria-label="Palette"><span style="background:#FFCF3D"></span><span style="background:#7FD4F0"></span><span style="background:#8BD47A"></span><span style="background:#F7DFA0"></span><span style="background:#E86A6A"></span></div>
+      </div>
+    </article>
+
+    <!-- 4 Moonlight Mail -->
+    <article class="card">
+      <svg class="scene" viewBox="0 0 400 250" role="img" aria-label="A little mint mail van with headlights on, driving past glowing cottages under a big moon">
+        <rect width="400" height="250" fill="#24305E"/>
+        <circle cx="322" cy="54" r="46" fill="#FFF2C2" opacity=".12"/><circle cx="322" cy="54" r="28" fill="#FFF2C2"/>
+        <g fill="#FFFFFF"><circle cx="40" cy="30" r="1.8"/><circle cx="110" cy="58" r="1.4"/><circle cx="170" cy="22" r="2"/><circle cx="240" cy="44" r="1.4"/><circle cx="380" cy="110" r="1.6"/><circle cx="70" cy="90" r="1.3"/><circle cx="210" cy="80" r="1.5"/></g>
+        <path d="M0 140 Q90 95 190 130 T400 120 V250 H0Z" fill="#33407A"/>
+        <rect x="56" y="104" width="34" height="26" fill="#F3E6D3"/><polygon points="50,106 73,86 96,106" fill="#E86A6A"/><rect x="66" y="112" width="10" height="10" fill="#FFD66B"/>
+        <rect x="290" y="96" width="38" height="30" fill="#F3E6D3"/><polygon points="284,98 309,76 334,98" fill="#9A7BD6"/><rect x="298" y="106" width="10" height="10" fill="#FFD66B"/><rect x="312" y="106" width="10" height="10" fill="#FFD66B"/>
+        <path d="M0 180 Q140 140 260 172 T400 165 V250 H0Z" fill="#2D6B6A"/>
+        <path d="M0 228 Q200 196 400 222 V250 H0Z" fill="#46528F"/>
+        <polygon points="262,190 400,160 400,232" fill="#FFE9A0" opacity=".28"/>
+        <ellipse cx="200" cy="226" rx="70" ry="7" fill="#000000" opacity=".25"/>
+        <g class="car">
+          <rect x="196" y="152" width="22" height="16" rx="2" fill="#FFFFFF"/><path d="M196 152 L207 162 L218 152" stroke="#E86A6A" stroke-width="2" fill="none"/>
+          <path d="M140 168 L140 210 L264 210 L264 186 Q262 168 240 166 L226 166 L226 168 Z" fill="#8FE3C8"/>
+          <rect x="140" y="166" width="88" height="44" rx="10" fill="#8FE3C8"/>
+          <path d="M230 172 L244 172 Q256 174 258 188 L230 188 Z" fill="#CDEBF5"/>
+          <circle cx="240" cy="181" r="3.5" fill="#2A2540"/><circle cx="250" cy="181" r="3.5" fill="#2A2540"/>
+          <rect x="150" y="182" width="60" height="6" rx="3" fill="#E86A6A"/>
+          <circle cx="262" cy="196" r="5" fill="#FFE9A0"/>
+          <circle cx="166" cy="212" r="13" fill="#1E2547"/><circle cx="166" cy="212" r="5" fill="#B6B0CC"/>
+          <circle cx="240" cy="212" r="13" fill="#1E2547"/><circle cx="240" cy="212" r="5" fill="#B6B0CC"/>
+        </g>
+      </svg>
+      <div class="body">
+        <div class="top"><h2>Moonlight Mail</h2><span class="tag">Cozy · Delivery</span></div>
+        <p class="pitch">A sleepy mail van delivering letters around a hillside village at night.</p>
+        <dl>
+          <dt>Car</dt><dd>Boxy little van with soft headlights and a letter on the roof. Honks a tiny "meep".</dd>
+          <dt>World</dt><dd>Winding hill roads, glowing windows, fireflies, a lighthouse, owls on fence posts.</dd>
+          <dt>Play</dt><dd>Read addresses, find houses, get to know each villager through the letters you carry.</dd>
+        </dl>
+        <div class="swatches" aria-label="Palette"><span style="background:#24305E"></span><span style="background:#8FE3C8"></span><span style="background:#FFD66B"></span><span style="background:#E86A6A"></span><span style="background:#2D6B6A"></span></div>
+      </div>
+    </article>
+
+    <!-- 5 Critter Garden -->
+    <article class="card">
+      <svg class="scene" viewBox="0 0 400 250" role="img" aria-label="A green frog-shaped car with eyes on its roof, driving between giant grass blades and a red mushroom">
+        <rect width="400" height="250" fill="#E9F7D2"/>
+        <g fill="#9ED36A"><path d="M20 250 Q30 120 60 40 Q50 150 60 250Z"/><path d="M350 250 Q360 140 390 60 Q378 160 385 250Z"/><path d="M110 250 Q120 170 100 110 Q140 170 135 250Z"/></g>
+        <g fill="#6FBF4A"><path d="M0 250 Q10 160 -10 90 Q35 160 30 250Z"/><path d="M300 250 Q300 170 330 120 Q322 190 325 250Z"/></g>
+        <rect x="300" y="128" width="20" height="44" rx="8" fill="#FFF6E5"/>
+        <path d="M268 132 Q310 70 352 132 Z" fill="#E84A4A"/>
+        <circle cx="296" cy="112" r="6" fill="#FFFFFF"/><circle cx="318" cy="100" r="5" fill="#FFFFFF"/><circle cx="332" cy="120" r="5" fill="#FFFFFF"/>
+        <path d="M150 64 Q160 46 170 64 A10 10 0 1 1 150 64Z" fill="#BFE9FF" opacity=".85"/><circle cx="156" cy="66" r="2.5" fill="#FFFFFF"/>
+        <ellipse cx="80" cy="48" rx="10" ry="8" fill="#E84A4A"/><line x1="80" y1="40" x2="80" y2="56" stroke="#2A2540" stroke-width="1.5"/><circle cx="77" cy="46" r="1.6" fill="#2A2540"/><circle cx="83" cy="51" r="1.6" fill="#2A2540"/><circle cx="72" cy="45" r="3" fill="#2A2540"/>
+        <path d="M0 218 Q200 200 400 218 V250 H0Z" fill="#B9865A"/>
+        <g fill="#9C6E46"><circle cx="60" cy="232" r="3"/><circle cx="150" cy="240" r="2"/><circle cx="260" cy="234" r="3"/><circle cx="340" cy="242" r="2"/></g>
+        <ellipse cx="195" cy="220" rx="64" ry="7" fill="#000000" opacity=".15"/>
+        <g class="car">
+          <circle cx="172" cy="140" r="16" fill="#5CC46B"/><circle cx="212" cy="140" r="16" fill="#5CC46B"/>
+          <circle cx="172" cy="139" r="10" fill="#FFFFFF"/><circle cx="212" cy="139" r="10" fill="#FFFFFF"/>
+          <circle cx="175" cy="140" r="5" fill="#2A2540"/><circle cx="215" cy="140" r="5" fill="#2A2540"/>
+          <path d="M136 210 Q132 158 192 150 Q252 158 254 210 Z" fill="#5CC46B"/>
+          <path d="M150 196 Q194 214 244 196" stroke="#2F7F3B" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <ellipse cx="160" cy="186" rx="8" ry="4" fill="#FF9CB8" opacity=".8"/><ellipse cx="232" cy="186" rx="8" ry="4" fill="#FF9CB8" opacity=".8"/>
+          <path d="M162 172 Q192 160 224 172" stroke="#BFF0C4" stroke-width="5" fill="none" stroke-linecap="round" opacity=".7"/>
+          <circle cx="158" cy="212" r="14" fill="#2F7F3B"/><circle cx="158" cy="212" r="6" fill="#A8E6A0"/>
+          <circle cx="232" cy="212" r="14" fill="#2F7F3B"/><circle cx="232" cy="212" r="6" fill="#A8E6A0"/>
+        </g>
+      </svg>
+      <div class="body">
+        <div class="top"><h2>Critter Garden</h2><span class="tag">Silly · Obstacle</span></div>
+        <p class="pitch">Animal-shaped cars racing through a backyard at bug scale.</p>
+        <dl>
+          <dt>Car</dt><dd>A frog car that hops over gaps. Unlock a snail car that sticks to walls and a bee car that floats.</dd>
+          <dt>World</dt><dd>Grass blades as tall as trees, mushroom ramps, dewdrop puddles, a garden hose river.</dd>
+          <dt>Play</dt><dd>Each car has one special move. Courses mix all three so you swap cars to get through.</dd>
+        </dl>
+        <div class="swatches" aria-label="Palette"><span style="background:#5CC46B"></span><span style="background:#E84A4A"></span><span style="background:#9ED36A"></span><span style="background:#B9865A"></span><span style="background:#E9F7D2"></span></div>
+      </div>
+    </article>
+
+    <!-- 6 Cloud Cruiser -->
+    <article class="card">
+      <svg class="scene" viewBox="0 0 400 250" role="img" aria-label="A lilac car with tiny wings driving over the top of a rainbow between clouds">
+        <defs><linearGradient id="g6" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#A9DBFF"/><stop offset="1" stop-color="#E6F5FF"/></linearGradient></defs>
+        <rect width="400" height="250" fill="url(#g6)"/>
+        <g fill="none" stroke-width="10">
+          <path d="M60 230 A140 140 0 0 1 340 230" stroke="#FF7B7B"/>
+          <path d="M70 230 A130 130 0 0 1 330 230" stroke="#FFB85C"/>
+          <path d="M80 230 A120 120 0 0 1 320 230" stroke="#FFE066"/>
+          <path d="M90 230 A110 110 0 0 1 310 230" stroke="#7FD88A"/>
+          <path d="M100 230 A100 100 0 0 1 300 230" stroke="#7FB8FF"/>
+        </g>
+        <g fill="#FFFFFF"><circle cx="40" cy="222" r="26"/><circle cx="75" cy="214" r="30"/><circle cx="108" cy="228" r="22"/><rect x="20" y="226" width="100" height="24"/></g>
+        <g fill="#FFFFFF"><circle cx="292" cy="228" r="22"/><circle cx="326" cy="212" r="30"/><circle cx="362" cy="224" r="26"/><rect x="280" y="226" width="110" height="24"/></g>
+        <g fill="#FFFFFF" opacity=".85"><circle cx="330" cy="50" r="14"/><circle cx="350" cy="44" r="18"/><circle cx="372" cy="52" r="12"/><circle cx="40" cy="70" r="12"/><circle cx="58" cy="64" r="15"/></g>
+        <g class="car">
+          <path d="M180 64 L160 54 L166 70 Z" fill="#FFFFFF"/><path d="M222 64 L244 54 L236 70 Z" fill="#FFFFFF"/>
+          <rect x="198" y="22" width="4" height="10" fill="#2A2540"/><ellipse cx="200" cy="22" rx="14" ry="3" fill="#FFB85C"/>
+          <path d="M168 84 Q166 50 200 46 Q234 50 234 84 Z" fill="#B79CFF"/>
+          <path d="M180 66 Q182 54 200 54 Q218 54 220 66 Z" fill="#E6F5FF"/>
+          <circle cx="194" cy="62" r="3.5" fill="#2A2540"/><circle cx="207" cy="62" r="3.5" fill="#2A2540"/>
+          <path d="M196 72 Q200.5 76 205 72" stroke="#2A2540" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="178" cy="85" r="8" fill="#2A2540"/><circle cx="222" cy="85" r="8" fill="#2A2540"/>
+        </g>
+      </svg>
+      <div class="body">
+        <div class="top"><h2>Cloud Cruiser</h2><span class="tag">Dreamy · Platformer</span></div>
+        <p class="pitch">A little winged car hopping between floating islands on rainbow roads.</p>
+        <dl>
+          <dt>Car</dt><dd>Round retro coupe with stubby wings and a propeller hat for short glides.</dd>
+          <dt>World</dt><dd>Cloud puffs that bounce, rainbow bridges that appear as you collect stars, sky whales.</dd>
+          <dt>Play</dt><dd>A side-view platformer. Jump, glide and boost across gaps to reach each island's sun.</dd>
+        </dl>
+        <div class="swatches" aria-label="Palette"><span style="background:#B79CFF"></span><span style="background:#A9DBFF"></span><span style="background:#FFE066"></span><span style="background:#FF7B7B"></span><span style="background:#FFFFFF"></span></div>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="next">
+    <h3>Three choices to make next</h3>
+    <div class="picks">
+      <div class="pick"><b>Camera</b>
+        <ul><li><strong>Top-down / 3/4 view</strong>: easiest to steer, suits islands and towns.</li><li><strong>Side view</strong>: suits Cloud Cruiser and jumpy courses.</li><li><strong>Behind the car (3D)</strong>: most immersive, most work.</li></ul></div>
+      <div class="pick"><b>Engine</b>
+        <ul><li><strong>Three.js</strong>: 3D in the browser, toy-like low-poly look.</li><li><strong>Phaser</strong>: 2D in the browser, fast to prototype.</li><li><strong>Godot</strong>: desktop and mobile builds, more setup.</li></ul></div>
+      <div class="pick"><b>First playable</b>
+        <ul><li>One car, one small map, one thing to do.</li><li>A 3 to 5 minute loop you can finish.</li><li>Polish the drive feel before adding content.</li></ul></div>
+    </div>
+  </section>
+</div>
