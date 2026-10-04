@@ -1036,7 +1036,7 @@ function setupLife(){
   anim.crossers={list:cr,inst:dynamic('Person',Math.max(1,cr.length),i=>crLook[i]||crLook[0])};
   // ferris wheel
   if(ferris){
-    const g=new THREE.Group();g.position.copy(ferris.p).multiplyScalar(R);g.quaternion.copy(quatUpFront(ferris.p,ferris.front));scene.add(g);
+    const g=new THREE.Group();g.position.copy(ferris.p).multiplyScalar(R);g.quaternion.copy(quatUpFront(ferris.p,ferris.front));scene.add(g);anim.ferrisG=g;
     g.add(cloneAsset('Ferris_Base'));
     const wheel=cloneAsset('Ferris_Wheel');wheel.position.set(0,9.4,0);g.add(wheel);
     const cabs=[];const CC=[0xA2CBEF,0xF4A99B,0xFFD88F,0x9FD8C4,0xC4B5F0];
@@ -1173,7 +1173,7 @@ function updateLife(dt,time){
     const want=laneR(b.L,b.a,b.r,4);b.rc=b.rc==null?want:b.rc+(want-b.rc)*Math.min(1,dt*0.8);
     const {p,fr}=onLake(b.L,b.a,b.rc,b.w);
     const q=quatUpFwdX(p,fr);_q.setFromAxisAngle(V(1,0,0),Math.sin(time*0.9+i)*0.05);q.multiply(_q);
-    (b.model?anim.row:anim.sail).set(b.slot,p.multiplyScalar(R+b.L.level+0.03+Math.sin(time*1.3+i)*0.04),q);
+    (b.model?anim.row:anim.sail).set(b.slot,p.multiplyScalar(R+b.L.level+0.03+Math.sin(time*1.3+i)*0.04),q);b.wp=p.clone();
   });
   anim.sail.commit();anim.row.commit();
   ducks.forEach((d,i)=>{
@@ -1182,7 +1182,7 @@ function updateLife(dt,time){
     const want=laneR(d.L,d.a,d.r,2);d.rc=d.rc==null?want:d.rc+(want-d.rc)*Math.min(1,dt*1.2);
     const {p,fr}=onLake(d.L,d.a,d.rc,d.w);
     const up=p.clone();
-    anim.ducks.set(i,p.multiplyScalar(R+d.L.level+Math.sin(time*3+d.ph)*0.025),quatUpFwdX(up,fr),d.s);
+    anim.ducks.set(i,p.multiplyScalar(R+d.L.level+Math.sin(time*3+d.ph)*0.025),quatUpFwdX(up,fr),d.s);d.wp=p.clone();
   });
   anim.ducks.commit();
   for(const pl of anim.planes){
@@ -1556,7 +1556,7 @@ function travel(where){
 chips($('#go'),PLACES,'go',k=>{travel(k);canvas.focus({preventScroll:true});});
 
 /* ================================================================ on foot */
-const me={sit:null,on:false,p:V(0,0,1),f:V(1,0,0),vel:V(0,0,0),h:0,yv:0,air:false,phase:0,speed:0,model:null,camF:V(1,0,0),pitch:0.32,lastStep:0};
+const me={frozen:false,lookTarget:null,sit:null,on:false,p:V(0,0,1),f:V(1,0,0),vel:V(0,0,0),h:0,yv:0,air:false,phase:0,speed:0,model:null,camF:V(1,0,0),pitch:0.32,lastStep:0};
 const focusP=()=>me.on?me.p:car.p;
 const focusH=()=>me.on?me.h:car.h;
 function makeMe(){me.model=OurPlanet.makeWalker({shirt:PAL[state.color].Body});me.model.visible=false;scene.add(me.model);}
@@ -1586,6 +1586,7 @@ function sitDown(b){
 }
 function standUp(){if(!me.sit)return;me.p.copy(offsetP(me.sit.p,me.sit.front,0.95));me.h=groundH(me.p);me.sit=null;refreshHud();}
 function act(){
+  if(OurPlanet.activities&&OurPlanet.activities.onAct&&OurPlanet.activities.onAct())return;
   if(me.sit){standUp();return;}
   if(me.on){const b=nearBench();if(b){sitDown(b);return;}}
   toggleFoot();
@@ -1641,6 +1642,7 @@ function surfaceAt(p,g){
 function stepWalker(dt){
   const fp=state.cam==='driver';
   if(me.sit){if(keys.w||keys.s||(!fp&&(keys.a||keys.d)))standUp();else{me.speed=0;return;}}
+  if(me.frozen){me.speed=0;me.vel.set(0,0,0);return;}   // busy: flying a kite, fishing, riding a balloon
   const ix=(keys.d?1:0)-(keys.a?1:0),iz=(keys.w?1:0)-(keys.s?1:0);
   let dir=V(0,0,0);
   if(fp){   // first person: W/S walk, A/D turn (drag to look as well)
@@ -1716,7 +1718,7 @@ function updateCamera(dt,snap){
       const pos=head.clone().addScaledVector(me.p,dist*Math.sin(me.pitch)).addScaledVector(me.camF,-dist*Math.cos(me.pitch));
       const cd=pos.clone().normalize(),gh=Math.max(hAt(cd),waterLevelAt(cd))+0.6;
       if(pos.length()<R+gh)pos.copy(cd).multiplyScalar(R+gh);
-      camera.position.copy(pos);camera.up.copy(me.p);camera.lookAt(me.sit?head.clone().addScaledVector(me.camF,7).addScaledVector(me.p,0.6):head);
+      camera.position.copy(pos);camera.up.copy(me.p);camera.lookAt(me.lookTarget?me.lookTarget:me.sit?head.clone().addScaledVector(me.camF,7).addScaledVector(me.p,0.6):head);
     }
   }else if(driver){
     // the driver seat: a gentle glance into turns, drag to look around, eases back to the road
@@ -1776,6 +1778,8 @@ function frame(now){
   if(steerWheel)steerWheel.rotation.x=-car.steer*2.4;
   if(cockpit&&cockpit.visible){const ch=cockpit.userData.charm;ch.position.y=1.9;ch.position.x=0.62-clamp(car.pitch,-0.05,0.05)*0.6;ch.position.z=0.12+clamp(car.roll,-0.07,0.07)*0.5;}
   updateMe(time);
+  if(OurPlanet.life)OurPlanet.life.update(dt,time);
+  if(OurPlanet.activities)OurPlanet.activities.update(dt,time);
   if(toastT>0){toastT-=dt;if(toastT<=0)toastEl.style.opacity=0;}
   updateSky(dt);updateCamera(dt,false);
   sky.position.copy(camera.position);stars.position.copy(camera.position);
@@ -1783,6 +1787,7 @@ function frame(now){
   if(window.OurPlanet.audio)OurPlanet.audio.update({speed:me.on?me.speed:car.vf,engine:!me.on,night:TOD.night,day:TOD.day,zone:placeEl.textContent},dt);
   if((placeT-=dt)<0){placeT=0.5;placeEl.textContent=zoneName(focusP());}
   renderer.render(scene,camera);
+  if(OurPlanet.activities)OurPlanet.activities.afterRender();
   requestAnimationFrame(frame);
 }
 msg('Shaping mountains…');
@@ -1797,6 +1802,13 @@ new THREE.GLTFLoader().load('assets/kit.json',gltf=>{
     if(/audiotest/.test(location.hash)){OurPlanet.audio.start();keys.w=true;setTimeout(()=>console.log('AUDIOTEST '+OurPlanet.audio.state()),6000);}
     updateSky(0);msg('');updateCamera(0,true);canvas.focus({preventScroll:true});
     const hp=location.hash.slice(1).split('-')[0];if(PLACES[hp])travel(hp);
+    // hand the world to the life scenes and the activities
+    OurPlanet.world={THREE,scene,camera,renderer,canvas,R,V,N,lin,clamp,lerp,smooth,offsetP,angTo,tangentToward,randomTangent,randomUnit,quatUpFront,quatUpFwdX,
+      hAt,groundH,slopeAt,waterLevelAt,roadEdge,occFree,occupy,zoneName,focusP,me,car,keys,toast,state,TOD,anim,placements,benches,windmills,lighthouse,
+      LAKES,MEADOW,FARM,ALPS,ALPS_R,ALPINE,CITY,CITY_HALF,cityLocal,fromCity,PEAKS,river,bridgeAt,ROADS,MAIN,ROAD_A,pointOn,tangentOn,tOf,fields,cloneAsset,
+      truck,truckBody:body,refreshHud,Y_ROAD,Y_WALK,laneR,ducks,boats,fountainSpot,parkSpot,get ferrisG(){return anim.ferrisG;}};
+    try{OurPlanet.life&&OurPlanet.life.init(OurPlanet.world);}catch(e){console.error('life',e);}
+    try{OurPlanet.activities&&OurPlanet.activities.init(OurPlanet.world);}catch(e){console.error('activities',e);}
     refreshHud();if(/walk/.test(location.hash)){toggleFoot();if(/stroll/.test(location.hash))keys.w=true;}
     if(/signal/.test(location.hash)){const t=tOf(ROAD_A,CITY)-26/R,p=pointOn(ROAD_A,t),f=tangentOn(ROAD_A,t);if(f.dot(tangentToward(p,CITY.clone().sub(p)))<0)f.negate();car.f.copy(f);car.p.copy(offsetP(p,V(0,0,0).crossVectors(f,p).normalize(),1.75));car.up.copy(car.p);camF.copy(car.f);car.h=Y_ROAD;}
     if(/sitview/.test(location.hash)&&benches.length){const b=benches.find(x=>x.name==='Lake Lull')||benches[0];toggleFoot();sitDown(b);}

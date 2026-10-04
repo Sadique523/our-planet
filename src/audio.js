@@ -100,6 +100,21 @@ function step(surface){
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(cfg[2],t+0.008);g.gain.exponentialRampToValueAtTime(0.0001,t+cfg[3]);
   src.connect(f).connect(g).connect(S.sfxBus);src.start(t,Math.random()*1.5);src.stop(t+cfg[3]+0.05);
 }
+// little sound effects for the journal and games
+function sfx(name){
+  const c=S.ctx;if(!c||!S.sfx||c.state!=='running')return;const t=c.currentTime+0.01;
+  const tone=(f,st,dur,vol,type='sine',f2)=>{const o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.setValueAtTime(f,t+st);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+st+dur);
+    g.gain.setValueAtTime(0,t+st);g.gain.linearRampToValueAtTime(vol,t+st+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+st+dur);o.connect(g).connect(S.sfxBus);o.start(t+st);o.stop(t+st+dur+0.05);};
+  const noise=(st,dur,vol,type,f,f2)=>{const s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();s.buffer=S.noise;fl.type=type;fl.frequency.setValueAtTime(f,t+st);if(f2)fl.frequency.exponentialRampToValueAtTime(f2,t+st+dur);
+    g.gain.setValueAtTime(0,t+st);g.gain.linearRampToValueAtTime(vol,t+st+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+st+dur);s.connect(fl).connect(g).connect(S.sfxBus);s.start(t+st,Math.random());s.stop(t+st+dur+0.05);};
+  if(name==='shutter'){noise(0,0.05,0.25,'highpass',3000);noise(0.07,0.06,0.18,'highpass',2500);}
+  else if(name==='chime'){tone(1046,0,0.5,0.08);tone(1568,0.08,0.6,0.07);}
+  else if(name==='success'){[784,988,1175,1568].forEach((f,i)=>tone(f,i*0.09,0.6,0.07,'triangle'));}
+  else if(name==='splash'){noise(0,0.35,0.16,'lowpass',2200,300);}
+  else if(name==='bite'){tone(660,0,0.12,0.1,'square',440);tone(660,0.15,0.12,0.08,'square',440);}
+  else if(name==='pop'){tone(520,0,0.18,0.12,'sine',140);noise(0,0.12,0.1,'highpass',1800);}
+  else if(name==='whoosh'){noise(0,0.3,0.12,'bandpass',600,2400);}
+}
 function cricket(t){
   const c=S.ctx;
   for(let i=0;i<3;i++){
@@ -159,5 +174,5 @@ function update(o,dt){
   S.wind.g.gain.setTargetAtTime(windy*(0.7+0.3*Math.sin(t*0.37)*Math.sin(t*0.11)),t,0.8);
   S.wind.fl.frequency.setTargetAtTime(380+120*Math.sin(t*0.23),t,0.8);
 }
-OP.audio={start,update,step,setMusic:v=>{S.music=v;},setSfx:v=>{S.sfx=v;},get started(){return!!S.ctx;},state:()=>S.ctx?S.ctx.state+' bar='+S.bar+' step='+S.step+' mood='+S.mood+' moving='+S.moving.toFixed(2):'not started'};
+OP.audio={start,update,step,sfx,setMusic:v=>{S.music=v;},setSfx:v=>{S.sfx=v;},get started(){return!!S.ctx;},state:()=>S.ctx?S.ctx.state+' bar='+S.bar+' step='+S.step+' mood='+S.mood+' moving='+S.moving.toFixed(2):'not started'};
 })();

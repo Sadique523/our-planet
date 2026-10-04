@@ -58,7 +58,7 @@ kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip
 .sbx{font-weight:800;font-size:13px;color:var(--ink);text-decoration:none;background:var(--chip);padding:7px 12px;border-radius:999px;align-self:flex-start}
 .sbx:hover{background:var(--line)}
 
-.speedo{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));
+.speedo{position:fixed;left:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));
   background:var(--panel);border-radius:999px;padding:6px 18px 6px 20px;display:flex;align-items:baseline;gap:6px;
   box-shadow:0 10px 30px -18px rgba(58,53,80,.5);pointer-events:none;white-space:nowrap}
 .speedo b{font-family:var(--display);font-weight:600;font-size:26px;font-variant-numeric:tabular-nums;min-width:2.2ch;text-align:right}
@@ -80,7 +80,55 @@ kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip
 }
 @media (max-width:560px){.speedo i:last-child{display:none}.rb .ic{width:52px;height:52px}}
 
-.clean .hud,.clean .settings,.clean .speedo,.clean .pad,.clean .toast{display:none!important}
+/* journal */
+.journal[hidden]{display:none!important}
+.journal{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(760px,calc(100% - 32px));max-height:min(82%,760px);
+  background:var(--panel);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-radius:24px;z-index:8;
+  box-shadow:0 24px 60px -24px rgba(58,53,80,.55);display:flex;flex-direction:column;overflow:hidden;animation:pop .18s ease}
+.jhead{padding:18px 20px 10px;display:flex;flex-direction:column;gap:10px}
+.jtop{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.jtop h1{font-family:var(--display);font-weight:600;font-size:26px;margin:0}
+.jprog{font-size:13px;color:var(--muted)}
+.jtrack{height:8px;border-radius:999px;background:var(--chip);overflow:hidden}
+.jtrack i{display:block;height:100%;background:linear-gradient(90deg,#F4A99B,#FFD88F,#9FD8C4);border-radius:999px;transition:width .4s ease}
+#jtabs{display:flex;flex-wrap:wrap;gap:6px}
+#jtabs button{font:inherit;font-weight:800;font-size:13px;border:0;background:var(--chip);color:var(--ink);padding:6px 13px;border-radius:999px;cursor:pointer}
+#jtabs button[aria-pressed="true"]{background:var(--ink);color:#FFFFFF}
+#jbody{padding:4px 20px 20px;overflow:auto;min-height:0}
+#jbody h3{font-family:var(--display);font-weight:600;font-size:17px;margin:16px 0 6px}
+.jnote{color:var(--muted);font-size:13px;margin:6px 0 10px}
+.jl{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:8px}
+.jc{display:flex;gap:10px;align-items:flex-start;background:#FFFFFF;border-radius:14px;padding:10px 12px;box-shadow:0 0 0 1px var(--line)}
+.jc div{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.jc small{color:var(--muted);font-size:12.5px;line-height:1.35}
+.jc .dot{width:12px;height:12px;border-radius:50%;background:var(--line);margin-top:4px;flex:none}
+.jc.done .dot{background:#9FD8C4;box-shadow:0 0 0 3px rgba(159,216,196,.35)}
+.jbtn{font:inherit;font-weight:800;font-size:12px;border:0;background:var(--ink);color:#FFFFFF;padding:5px 11px;border-radius:999px;cursor:pointer;align-self:center;white-space:nowrap}
+.jbtn:disabled{background:var(--chip);color:var(--muted);cursor:default}
+.alb{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.alb figure{margin:0;background:#FFFFFF;border-radius:14px;padding:8px;box-shadow:0 0 0 1px var(--line);transform:rotate(-.6deg)}
+.alb figure:nth-child(2n){transform:rotate(.7deg)}
+.alb img{width:100%;border-radius:8px;display:block}
+.alb figcaption{font-size:12px;color:var(--muted);padding:6px 2px 0}
+/* tracker */
+.tracker[hidden]{display:none!important}
+.tracker{position:fixed;left:16px;top:calc(16px + env(safe-area-inset-top,0px));background:var(--panel);border-radius:18px;padding:10px 16px 10px 12px;
+  display:flex;align-items:center;gap:12px;box-shadow:0 10px 30px -18px rgba(58,53,80,.5);pointer-events:none;max-width:min(340px,calc(100% - 32px))}
+.tracker .arr{width:36px;height:36px;border-radius:50%;background:var(--ink);color:#FFFFFF;display:grid;place-items:center;font-weight:800;font-size:18px;flex:none}
+.tracker div{display:flex;flex-direction:column;min-width:0}
+.tracker small{color:var(--muted);font-weight:700;font-size:12px}
+/* camera */
+.viewfinder[hidden]{display:none!important}
+.viewfinder{position:fixed;inset:0;z-index:7;cursor:crosshair}
+.viewfinder .fr{position:absolute;inset:7%;border:2px solid rgba(255,255,255,.85);border-radius:22px;box-shadow:0 0 0 2000px rgba(30,25,50,.12)}
+.viewfinder .fr::before,.viewfinder .fr::after{content:"";position:absolute;left:50%;top:50%;width:26px;height:2px;background:rgba(255,255,255,.85);transform:translate(-50%,-50%)}
+.viewfinder .fr::after{width:2px;height:26px}
+.viewfinder .vt{position:absolute;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);display:flex;gap:10px}
+.viewfinder .vt span,.viewfinder .vt button{font:inherit;font-weight:800;font-size:13px;background:var(--panel);color:var(--ink);border:0;border-radius:999px;padding:8px 16px}
+.viewfinder .vt button{cursor:pointer}
+.flash{position:fixed;inset:0;background:#FFFFFF;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:9}
+.photo .hud,.photo .speedo,.photo .tracker,.photo .pad,.photo .settings{display:none!important}
+.clean .hud,.clean .settings,.clean .speedo,.clean .pad,.clean .toast,.clean .tracker{display:none!important}
 .msg{position:fixed;inset:0;display:grid;place-items:center;padding:24px;text-align:center;font-family:var(--display);font-size:20px;color:var(--ink)}
 </style>
 
@@ -88,6 +136,14 @@ kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip
 <div class="msg" id="msg">Loading the planet…</div>
 
 <div class="hud">
+  <button class="rb" id="photoBtn" type="button" aria-label="Open the camera">
+    <span class="ic"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg></span>
+    <span>Photo</span>
+  </button>
+  <button class="rb" id="journalBtn" type="button" aria-label="Open the journal" aria-pressed="false">
+    <span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4.5h11a3 3 0 0 1 3 3V20H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11M9 8.5h6M9 11h4"/></svg></span>
+    <span>Journal</span>
+  </button>
   <button class="rb" id="viewBtn" type="button" aria-label="Switch to first person view">
     <span class="ic"><svg viewBox="0 0 24 24"><path d="M2 12s3.6-6 10-6 10 6 10 6-3.6 6-10 6S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
     <span id="viewLabel">1st person</span>
@@ -116,6 +172,9 @@ kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip
       <dt><kbd>E</kbd></dt><dd>Get out of the truck or back in; sit on a bench</dd>
       <dt><kbd>Space</kbd></dt><dd>Handbrake in the truck, jump on foot</dd>
       <dt><kbd>Shift</kbd></dt><dd>Run</dd>
+      <dt><kbd>F</kbd></dt><dd>Fish, fly a kite or throw snowballs (depends where you are)</dd>
+      <dt><kbd>P</kbd></dt><dd>Camera: take photos for your journal</dd>
+      <dt><kbd>J</kbd></dt><dd>Journal: moments, field guide, wonders, jobs, games</dd>
       <dt><kbd>V</kbd></dt><dd>First / third person</dd>
       <dt><kbd>C</kbd></dt><dd>Cycle cameras, including top-down</dd>
       <dt>Drag</dt><dd>Look around</dd>
@@ -125,6 +184,18 @@ kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip
   <a class="sbx" href="sandbox.html">Open the model sandbox →</a>
 </section>
 
+<section class="journal" id="journal" role="dialog" aria-label="Journal" hidden>
+  <div class="jhead">
+    <div class="jtop"><h1>Journal</h1><button class="x" id="closeJournal" type="button" aria-label="Close journal">✕</button></div>
+    <div class="jprog" id="jprog"></div>
+    <div class="jtrack"><i id="jbar" style="width:0%"></i></div>
+    <div id="jtabs"></div>
+  </div>
+  <div id="jbody"></div>
+</section>
+<div class="tracker" id="tracker" hidden></div>
+<div class="viewfinder" id="viewfinder" hidden><div class="fr"></div><div class="vt"><span>Click or <kbd>Space</kbd> to take a photo</span><button type="button" id="vfClose">Put camera away</button></div></div>
+<div class="flash" id="flash"></div>
 <div class="toast" id="toast" style="opacity:0" aria-live="polite"></div>
 <div class="speedo" aria-live="off"><b id="kmh">0</b><small>km/h</small><i id="place">Town</i><i id="clock">15:00</i></div>
 <div class="pad" aria-hidden="true">
@@ -135,5 +206,8 @@ kbd{font-family:var(--body);font-weight:800;font-size:12px;background:var(--chip
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="src/shared.js"></script>
+<script src="src/creatures.js"></script>
 <script src="src/audio.js"></script>
 <script src="src/game.js"></script>
+<script src="src/life.js"></script>
+<script src="src/activities.js"></script>

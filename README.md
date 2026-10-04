@@ -63,6 +63,22 @@ Benches sit only at chosen **viewpoints**: across Lake Lull and Maple Lake towar
 
 <img src="docs/images/bench-sunset.png" alt="The explorer sitting on a lakeside bench at sunset, watching sailboats on Lake Lull" width="100%">
 
+## Things to do
+
+Open the **Journal** (<kbd>J</kbd>) to track everything:
+
+- 📸 **Photo journal:** press <kbd>P</kbd> for the camera and capture 13 special moments: a duck family, the Sugarhorn at sunset, the banner plane, the lighthouse at night, a balloon, the Ferris wheel under the stars, sailboats, windmills, the stone bridge, a snowman, the alpine lake, a deer, city lights. Every photo goes into your album.
+- 🦌 **Field guide:** get close to wildlife to log it: deer herds that graze and bolt, foxes in the snow, hopping rabbits, butterflies over the meadow, leaping fish, owls on the treetops at night, chickens at the farm, ducks and songbirds.
+- ✨ **Ten hidden wonders**, each with a riddle: a waterfall, a message in a bottle, a giant sunflower, a fairy ring, a wishing well, a treehouse, standing stones, an igloo, a river rainbow and a secret garden.
+- 📦 **Deliveries:** six jobs between the meadow, farm, city, Alps, lakes and the Snowy North. The cargo rides in your truck bed and a floating marker guides you.
+- 🌱 **Tidy the planet:** walk over 24 pieces of litter to pick them up.
+- 🪁 **Kite flying, fishing, snowballs:** press <kbd>F</kbd> on open grass, facing water, or in the snow. Steer the kite to catch stars, wait for the bobber to dip (species change by lake and time of day, and every fish is released), or knock down the snow fort's six snowmen against the clock.
+- 🎈 **Balloon ride:** find the balloon at Butter Farms and press <kbd>E</kbd> to float a full slow loop around the planet.
+
+## Life everywhere
+
+Little scenes of people enjoying the world: friends eating and chatting at café tables, groups talking on the plaza, a street musician with notes drifting up, kids kicking a ball, picnics in the meadow and by the lake, a kid flying a kite, people fishing off the piers, hikers with walking sticks on forest trails and around the alpine lake, a campsite round a crackling fire, kids sledding and building a snowman, and a farmer among the chickens.
+
 ## Traffic
 
 Traffic lights stand at every crossing of the main roads, with painted stop lines and zebra crossings. Cars ease to a stop on red, queue, and pull away on green, and they go through on amber only when they're too close to stop. When traffic on a road has red, pedestrians cross over the zebra. Cars wait for anyone still crossing, for you on foot, and they pull around a truck you've parked in the lane.
@@ -152,7 +168,10 @@ index.html            the game page
 sandbox.html          the model sandbox
 src/game.js           planet, terrain, roads, life, day/night, driving, camera
 src/sandbox.js        sandbox viewer
-src/audio.js          generative music and ambient sound (Web Audio)
+src/audio.js          generative music, ambient sound and effects (Web Audio)
+src/creatures.js      wildlife, wonders, props, cargo and litter built in code
+src/life.js           everyday scenes: cafés, musicians, picnics, hikers, campsite, sledding
+src/activities.js     journal, photos, field guide, wonders, jobs, litter, kite, fishing, snow fort, balloon
 src/shared.js         small models built in code and shared settings
 assets/kit.glb        every Blender model (kit.json is the same data as JSON)
 assets/kit.blend      the Blender file

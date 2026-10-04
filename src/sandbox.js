@@ -95,6 +95,10 @@ const CATALOG=[
   ['Water and landmarks',[['Lighthouse'],['Bridge','Stone arch bridge over Ribbon River'],['Pier','Wooden pier with lantern',1],['Reeds',null,1],['LilyPad',null,1],['LilyFlower',null,1]]],
   ['Nature',[['Tree_Round'],['Tree_Birch'],['Tree_Pine'],['Tree_PineTall'],['Tree_PineSnow'],['Tree_PineTallSnow'],['Bush'],['Hedge'],['Boulder'],['SnowMound'],['Flower'],['Snowman']]],
   ['Street',[['TrafficLight','Traffic light: green, amber, red'],['Lamp'],['Bench'],['Mailbox'],['Hydrant'],['Planter']]],
+  ['Wildlife',[['Deer','Grazes at forest edges, flees if you rush in'],['Fawn'],['Fox'],['Rabbit'],['Chicken'],['Butterfly'],['Fish'],['Owl']]],
+  ['Wonders',[['Waterfall'],['Bottle','Message in a bottle'],['Sunflower','The giant sunflower'],['FairyRing','Fairy ring'],['WishingWell','Wishing well'],['Treehouse'],['StandingStones','Standing stones'],['Igloo'],['Rainbow'],['SecretGarden','Secret garden']]],
+  ['Everyday life',[['Tent'],['Campfire'],['Guitar'],['Sled'],['PicnicBlanket','Picnic blanket'],['Cup'],['Ball'],['Kite'],['FishingRod','Fishing rod'],['Bobber'],['SnowFort','Snow fort'],['BalloonPad','Balloon pad'],['Marker','Job marker']]],
+  ['Cargo and litter',[['CargoFlowers'],['CargoLogs'],['CargoLetter'],['CargoBasket'],['CargoCrates'],['CargoFlask'],['LitterCan'],['LitterBottle'],['LitterPaper']]],
   ['Parts',[['Ferris_Base'],['Ferris_Wheel'],['Ferris_Cab'],['Windmill_Body'],['Windmill_Blades'],['Plane_Prop']]]
 ];
 const pretty=id=>({Car_Pickup_Static:'Parked pickup',Car_Bubble_Static:'Bubble car',Ferris:'Ferris wheel'}[id]||id.replace(/^(City|House|Tree)_/,'').replace(/_/g,' ').replace(/([a-z])([A-Z])/g,'$1 $2'));
@@ -220,6 +224,7 @@ $('#name').textContent='Loading models…';
 new THREE.GLTFLoader().load('assets/kit.json',g=>{
   kit=g.scene;
   for(const m of OP.extraModels())extra[m.name]=m;
+  for(const n of OP.modelNames||[]){const o=OP.models[n]();o.name=n;extra[n]=o;}
   buildList();resize();applyLight();
   const want=decodeURIComponent(location.hash.slice(1));
   select(entries.some(e=>e.id===want)?want:'Truck');

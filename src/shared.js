@@ -63,8 +63,9 @@ OP.makeWalker=(c={})=>{
   head.add(mesh(new THREE.SphereGeometry(0.036,8,6),eye,-0.09,0,0.25),mesh(new THREE.SphereGeometry(0.036,8,6),eye,0.09,0,0.25));
   const bl=new THREE.SphereGeometry(0.05,8,6);bl.scale(1,0.6,0.4);head.add(mesh(bl,blush,-0.16,-0.08,0.21),mesh(bl,blush,0.16,-0.08,0.21));
   torso.add(head);
-  torso.add(mesh(rb(0.34,0.38,0.15,0.07),M.pack,0,0.84,-0.22),mesh(rb(0.26,0.12,0.06,0.03),M.strap,0,0.76,-0.31));
-  for(const s of [-1,1])torso.add(mesh(rb(0.05,0.42,0.03,0.015),M.strap,s*0.13,0.86,0.15));
+  if(c.hat){const hat=new THREE.Group();hat.position.set(0,0.2,0);hat.add(mesh(new THREE.CylinderGeometry(0.3,0.34,0.04,16),new THREE.MeshStandardMaterial({color:lin(c.hat),roughness:0.8})),mesh(new THREE.CylinderGeometry(0.2,0.25,0.16,16),new THREE.MeshStandardMaterial({color:lin(c.hat),roughness:0.8}),0,0.09,0));head.add(hat);}
+  if(!c.lite||c.pack){torso.add(mesh(rb(0.34,0.38,0.15,0.07),M.pack,0,0.84,-0.22),mesh(rb(0.26,0.12,0.06,0.03),M.strap,0,0.76,-0.31));
+  for(const s of [-1,1])torso.add(mesh(rb(0.05,0.42,0.03,0.015),M.strap,s*0.13,0.86,0.15));}
   g.add(torso);
   g.userData={legs,arms,torso,head,mats:M};
   return g;
